@@ -33,6 +33,12 @@ class _HomePageState extends State<HomePage> {
     if (!context.mounted) {
       return;
     }
+
+    clearWater();
+  }
+
+  void clearWater() {
+    amountController.clear();
   }
 
   void addWater() {

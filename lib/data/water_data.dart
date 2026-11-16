@@ -62,4 +62,14 @@ class WaterData extends ChangeNotifier {
     notifyListeners();
     return waterDataList;
   }
+
+  void delete(WaterModel waterModel) async {
+    final url = Uri.https('water-intaker-42b34-default-rtdb.firebaseio.com', 
+      'water/${waterModel.id}.json');
+    http.delete(url);
+
+    waterDataList.removeWhere((element) => element.id == waterModel.id!);
+    notifyListeners();
+
+  }
 }
