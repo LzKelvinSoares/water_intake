@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:water_intake/model/water_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:water_intake/utils/date_helper.dart';
 
 class WaterData extends ChangeNotifier {
   List<WaterModel> waterDataList = [];
@@ -71,5 +72,68 @@ class WaterData extends ChangeNotifier {
     waterDataList.removeWhere((element) => element.id == waterModel.id!);
     notifyListeners();
 
+  }
+
+  String calculateWeeklyWaterIntake(WaterData data) {
+    double weeklyWaterIntake = 0;
+
+    for (var water in data.waterDataList) {
+      weeklyWaterIntake += water.amount;
+    }
+
+    return weeklyWaterIntake.toStringAsFixed(2);
+  }
+
+  Map<String, double> calculateDailyWaterSummary() {
+    Map<String, double> dailyWaterSummary = {};
+
+    for (var water in waterDataList) {
+      String date = convertDateTimeToString(water.dateTime);
+      double amount = water.amount;
+
+      if (dailyWaterSummary.containsKey(date)) {
+        double currentAmount = dailyWaterSummary[date]!;
+        currentAmount += amount;
+        dailyWaterSummary[date] = currentAmount;
+      } else {
+        dailyWaterSummary.addAll({date: amount});
+      }
+    }
+
+    return dailyWaterSummary;
+  }
+
+  String getWeekDay(DateTime dateTime) {
+    switch (dateTime.weekday) {
+      case 1:
+        return 'Mon';
+      case 2:
+        return 'Tue';
+      case 3:
+        return 'Wed';
+      case 4:
+        return 'Thu';
+      case 5:
+        return 'Fri';
+      case 6:
+        return 'Sat';
+      case 7:
+        return 'Sun';
+      default:
+        throw ArgumentError.value(dateTime.weekday, 'weekday', 'Must be between 1 and 7');
+    }
+  }
+
+  DateTime getStartOfWeek() {
+    DateTime? startOfWeek;
+
+    DateTime dateTime = DateTime.now();
+    for (int i = 0; i < 7; i++) {
+      if (getWeekDay(dateTime.subtract(Duration(days: i))) == 'Sun') {
+        startOfWeek = dateTime.subtract(Duration(days: i));
+      }
+    }
+
+    return startOfWeek!;
   }
 }

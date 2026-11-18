@@ -24,7 +24,7 @@ class WaterTile extends StatelessWidget {
             Text('${waterModel.amount.toStringAsFixed(2)} ml', style: Theme.of(context).textTheme.titleMedium,),
           ],
         ),
-        subtitle: Text('${waterModel.dateTime.day}/${waterModel.dateTime.month}'),
+        subtitle: Text('${waterModel.dateTime.day}/${waterModel.dateTime.month}/${waterModel.dateTime.year}'),
         trailing: IconButton(
           onPressed: () {
             Provider.of<WaterData>(context, listen: false).delete(waterModel);
