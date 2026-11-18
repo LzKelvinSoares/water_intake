@@ -111,7 +111,19 @@ class _HomePageState extends State<HomePage> {
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Water'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Weekly:', 
+                style: Theme.of(context).textTheme.titleMedium,
+              ), 
+              Text(
+                ' ${value.calculateWeeklyWaterIntake(value)} ml', 
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
           actions: [IconButton(onPressed: null, icon: Icon(Icons.map))],
         ),
         body: ListView(
