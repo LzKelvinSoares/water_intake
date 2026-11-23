@@ -4,6 +4,8 @@ import 'package:water_intake/components/water_tile.dart';
 import 'package:water_intake/data/water_data.dart';
 import 'package:provider/provider.dart';
 import 'package:water_intake/model/water_model.dart';
+import 'package:water_intake/pages/about.dart';
+import 'package:water_intake/pages/settings.dart';
 
 class HomePage extends StatefulWidget {
   const new({super.key});
@@ -114,13 +116,11 @@ class _HomePageState extends State<HomePage> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text('Weekly:', style: Theme.of(context).textTheme.titleMedium),
               Text(
-                'Weekly:', 
-                style: Theme.of(context).textTheme.titleMedium,
-              ), 
-              Text(
-                ' ${value.calculateWeeklyWaterIntake(value)} ml', 
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                ' ${value.calculateWeeklyWaterIntake(value)} ml',
+                style: Theme.of(context).textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -143,6 +143,36 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                child: Text(
+                  'Water Intake',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('Settings'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                },
+              ),
+              ListTile(
+                title: Text('About'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AboutScreen()));
+                },
+              )
+            ],
+          ),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: addWater,
           child: Icon(Icons.add),
